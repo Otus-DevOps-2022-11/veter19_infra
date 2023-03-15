@@ -1,9 +1,17 @@
 #!/bin/bash
-apt-get install apt-transport-https ca-certificates
-wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | apt-key add -
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.2 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+
+# add repository key
+wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+
+# add mongodb repository
+echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+sleep 3m
+# update list packages
 apt-get update
+
+# install mongodb
 apt-get install -y mongodb-org
-sleep 10
+
+# start and enable mongodb service
 systemctl start mongod
 systemctl enable mongod
