@@ -5,25 +5,21 @@
             "service_account_key_file": "{{user `key`}}",
             "folder_id": "{{user `fid`}}",
             "source_image_family": "{{user `image`}}",
-            "image_name": "reddit-base-{{timestamp}}",
-            "image_family": "reddit-base",
+            "image_name": "reddit-db-base-{{timestamp}}",
+            "image_family": "reddit-db-base",
             "ssh_username": "ubuntu",
             "use_ipv4_nat": "true",
-            "disk_name": "reddit-base",
+            "disk_name": "reddit-db-base",
             "disk_size_gb": "20",
             "platform_id": "standard-v1"
         }
     ],
     "provisioners": [
         {
-            "type": "shell",
-            "script": "scripts/install_ruby.sh",
-            "execute_command": "sudo {{.Path}}"
-        },
-        {
-            "type": "shell",
-            "script": "scripts/install_mongodb.sh",
-            "execute_command": "sudo {{.Path}}"
+            "type": "ansible",
+            "playbook_file": "ansible/playbooks/packer_db.yml",
+            "extra_arguments": ["--tags","install"],
+            "ansible_env_vars": ["ANSIBLE_ROLES_PATH={{ pwd }}/ansible/roles"]
         }
     ]
 }
